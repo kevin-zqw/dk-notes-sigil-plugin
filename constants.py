@@ -5,10 +5,11 @@ from __future__ import unicode_literals, division, absolute_import, print_functi
 
 pref_search_type = 'search_type'
 pref_output_type = 'output_type'
-pref_windowGeometry = 'windowGeometry'
-pref_debug = 'debug'
 pref_add_notes_mark = 'add_notes_mark'
 pref_mix_notes_class = 'mix_notes_class'
+pref_windowGeometry = 'windowGeometry'
+pref_debug = 'debug'
+pref_is_confirm_run = 'is_confirm_run'
 
 search_type_sup = 'sup'
 search_type_paragraph = 'paragraph'

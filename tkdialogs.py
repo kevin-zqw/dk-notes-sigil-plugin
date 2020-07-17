@@ -181,6 +181,9 @@ class guiMain(tkinter.Frame):
 
 
     def cmdDo(self):
+        # set confirm to run plugin
+        self.prefs[constants.pref_is_confirm_run] = True
+
         self.prefs[constants.pref_search_type] = self.searchType.get()
         self.prefs[constants.pref_output_type] = self.outputType.get()
         self.prefs[constants.pref_windowGeometry] = self.parent.geometry()

@@ -32,6 +32,9 @@ def run(bk):
 
     prefs = bk.getPrefs()
 
+    # only run plugin if confirm button pressed
+    prefs[constants.pref_is_confirm_run] = False
+
     # set default preference values
     if constants.pref_debug not in prefs:
         prefs[constants.pref_debug] = _DEBUG_
@@ -49,13 +52,16 @@ def run(bk):
     ''' Launch Main Dialog '''
     launch_gui(bk, prefs)
 
+    print('*****************多看注释插件（终结版）*****************\n\n')
+    if not prefs[constants.pref_is_confirm_run]:
+        print('取消了插件运行')
+        return 0
+
     _DEBUG_ = prefs[constants.pref_debug]
     search_type = prefs[constants.pref_search_type]
     output_type = prefs[constants.pref_output_type]
     mix_notes_class = prefs[constants.pref_mix_notes_class]
     add_notes_mark = prefs[constants.pref_add_notes_mark]
-
-    print('*****************多看注释插件（终结版）*****************\n\n')
 
     print('Python路径: {}'.format(sys.path))
     print('是否调试模式: {}\n'.format(_DEBUG_))
