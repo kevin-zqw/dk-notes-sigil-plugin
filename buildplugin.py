@@ -19,8 +19,9 @@ TEMP_DIR = os.path.join(SCRIPT_DIR, PLUGIN_NAME)
 
 PLUGIN_FILES = [
     'plugin.py',
-    'tkdialogs.py',
     'plugin.xml',
+    'plugin.png',
+    'tkdialogs.py',
     'utilities.py',
     'images',
 ]
