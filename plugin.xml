@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <name>DuoKanNotes</name>
+  <type>edit</type>
+  <author>KevinZhang</author>
+  <description>Process DuoKan notes as your wish</description>
+  <engine>python3.4</engine>
+  <engine>python2.7</engine>
+  <version>0.0.1</version>
+  <oslist>osx,unx,win</oslist>
+  <autostart>true</autostart>
+  <autoclose>true</autoclose>
+</plugin>
