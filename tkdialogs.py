@@ -5,7 +5,7 @@ from __future__ import unicode_literals, division, absolute_import, print_functi
 
 import sys
 import os
-
+import constants
 import tkinter
 
 
@@ -30,14 +30,14 @@ class guiMain(tkinter.Frame):
         self.bk = bk
         self.prefs = prefs
 
-        if self.prefs['windowGeometry'] is None:
+        if self.prefs[constants.pref_windowGeometry] is None:
             # Sane geometry defaults
             w = self.parent.winfo_screenwidth()
             h = self.parent.winfo_screenheight()
             rootsize = (440, 420)
             x = w/2 - rootsize[0]/2
             y = h/2 - rootsize[1]/2
-            self.prefs['windowGeometry'] = ('%dx%d+%d+%d' % (rootsize + (x, y)))
+            self.prefs[constants.pref_windowGeometry] = ('%dx%d+%d+%d' % (rootsize + (x, y)))
 
         self.initUI()
         parent.protocol('WM_DELETE_WINDOW', self.quitApp)
@@ -65,40 +65,40 @@ class guiMain(tkinter.Frame):
 
         # sup
         radio_frame_sup = tkinter.Frame(search_frame)
-        radio_search_sup = tkinter.Radiobutton(radio_frame_sup, text='中亚注释：<sup><a/></sup>自动查找',
-                                               var=self.searchType, value='sup')
+        radio_search_sup = tkinter.Radiobutton(radio_frame_sup, text=constants.search_type_dict[constants.search_type_sup],
+                                               var=self.searchType, value=constants.search_type_sup)
         radio_search_sup.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH)
         radio_frame_sup.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
         # paragraph
         radio_frame_paragraph = tkinter.Frame(search_frame)
-        radio_search_paragraph = tkinter.Radiobutton(radio_frame_paragraph, text='段间注：正文[1]，后续段落<p>[1]</p>',
-                                                     var=self.searchType, value='paragraph')
+        radio_search_paragraph = tkinter.Radiobutton(radio_frame_paragraph, text=constants.search_type_dict[constants.search_type_paragraph],
+                                                     var=self.searchType, value=constants.search_type_paragraph)
         radio_search_paragraph.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH)
         radio_frame_paragraph.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
         # preprocessed
         radio_frame_preprocessed = tkinter.Frame(search_frame)
-        radio_search_preprocessed = tkinter.Radiobutton(radio_frame_preprocessed, text='正则预处理：正文[id:href]；注释<p>[id:href]注释内容</p>',
-                                                        var=self.searchType, value='preprocessed')
+        radio_search_preprocessed = tkinter.Radiobutton(radio_frame_preprocessed, text=constants.search_type_dict[constants.search_type_preprocessed],
+                                                        var=self.searchType, value=constants.search_type_preprocessed)
         radio_search_preprocessed.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH)
         radio_frame_preprocessed.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
         # brackets
         radio_frame_brackets = tkinter.Frame(search_frame)
-        radio_search_brackets = tkinter.Radiobutton(radio_frame_brackets, text='原始文本中括号：正文【【注释】】',
-                                                    var=self.searchType, value='brackets')
+        radio_search_brackets = tkinter.Radiobutton(radio_frame_brackets, text=constants.search_type_dict[constants.search_type_brackets],
+                                                    var=self.searchType, value=constants.search_type_brackets)
         radio_search_brackets.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH)
         radio_frame_brackets.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
         search_frame.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
-        search_type = self.prefs['search_type']
-        if search_type == 'sup':
+        search_type = self.prefs[constants.pref_search_type]
+        if search_type == constants.search_type_sup:
             radio_search_sup.select()
-        elif search_type == 'paragraph':
+        elif search_type == constants.search_type_paragraph:
             radio_search_paragraph.select()
-        elif search_type == 'preprocessed':
+        elif search_type == constants.search_type_preprocessed:
             radio_search_preprocessed.select()
         else:
             radio_search_brackets.select()
@@ -116,8 +116,8 @@ class guiMain(tkinter.Frame):
 
         # DuoKan notes
         radio_frame_duokan = tkinter.Frame(output_frame)
-        radio_output_duokan = tkinter.Radiobutton(radio_frame_duokan, text='多看兼容弹注',
-                                                  var=self.outputType, value='duokan')
+        radio_output_duokan = tkinter.Radiobutton(radio_frame_duokan, text=constants.output_type_dict[constants.output_duokan],
+                                                  var=self.outputType, value=constants.output_duokan)
         radio_output_duokan.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH)
         radio_frame_duokan.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
@@ -128,13 +128,13 @@ class guiMain(tkinter.Frame):
                                                         variable=self.add_notes_mark)
         checkbox_add_notes_mark.pack(side=tkinter.constants.LEFT, padx=20, fill=tkinter.constants.BOTH)
         checkbox_add_notes_mark_frame.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
-        if self.prefs['add_notes_mark']:
+        if self.prefs[constants.pref_add_notes_mark]:
             checkbox_add_notes_mark.select()
 
         # Mix notes
         radio_frame_mix = tkinter.Frame(output_frame)
-        radio_output_mix = tkinter.Radiobutton(radio_frame_mix, text='夹注',
-                                                   var=self.outputType, value='mix')
+        radio_output_mix = tkinter.Radiobutton(radio_frame_mix, text=constants.output_type_dict[constants.output_mix],
+                                                   var=self.outputType, value=constants.output_mix)
         radio_output_mix.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH)
         radio_frame_mix.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
@@ -145,12 +145,12 @@ class guiMain(tkinter.Frame):
 
         self.mix_notes_class_entry = tkinter.Entry(mix_span_class_frame)
         self.mix_notes_class_entry.pack(side=tkinter.constants.LEFT, fill=tkinter.constants.BOTH, expand=1)
-        self.mix_notes_class_entry.insert(0, self.prefs['mix_notes_class'])
+        self.mix_notes_class_entry.insert(0, self.prefs[constants.pref_mix_notes_class])
 
         mix_span_class_frame.pack(side=tkinter.constants.TOP, fill=tkinter.constants.BOTH)
 
-        output_type = self.prefs['output_type']
-        if output_type == 'duokan':
+        output_type = self.prefs[constants.pref_output_type]
+        if output_type == constants.output_duokan:
             radio_output_duokan.select()
         else:
             radio_output_mix.select()
@@ -161,7 +161,7 @@ class guiMain(tkinter.Frame):
         checkbox_debug = tkinter.Checkbutton(body, text='调试模式（不修改文本，仅查找并报告不匹配的注释项）',
                                              variable=self.debug)
         checkbox_debug.pack(side=tkinter.constants.BOTTOM, pady=10, anchor=tkinter.constants.W)
-        if self.prefs['debug']:
+        if self.prefs[constants.pref_debug]:
             checkbox_debug.select()
 
         # Dialog buttonbox (three buttons)
@@ -175,27 +175,27 @@ class guiMain(tkinter.Frame):
         body.pack(fill=tkinter.constants.BOTH)
 
         # Get the saved window geometry settings
-        self.parent.geometry(self.prefs['windowGeometry'])
+        self.parent.geometry(self.prefs[constants.pref_windowGeometry])
         self.parent.deiconify()
         self.parent.lift()
 
 
     def cmdDo(self):
-        self.prefs['search_type'] = self.searchType.get()
-        self.prefs['output_type'] = self.outputType.get()
-        self.prefs['windowGeometry'] = self.parent.geometry()
-        self.prefs['debug'] = self.debug.get()
-        self.prefs['add_notes_mark'] = self.add_notes_mark.get()
+        self.prefs[constants.pref_search_type] = self.searchType.get()
+        self.prefs[constants.pref_output_type] = self.outputType.get()
+        self.prefs[constants.pref_windowGeometry] = self.parent.geometry()
+        self.prefs[constants.pref_debug] = self.debug.get()
+        self.prefs[constants.pref_add_notes_mark] = self.add_notes_mark.get()
         if len(self.mix_notes_class_entry.get()):
-            self.prefs['mix_notes_class'] = self.mix_notes_class_entry.get()
+            self.prefs[constants.pref_mix_notes_class] = self.mix_notes_class_entry.get()
 
         self.bk.savePrefs(self.prefs)
         self.quitApp()
 
     def cmdCancel(self):
         '''Close aborting any changes'''
-        self.prefs['windowGeometry'] = self.parent.geometry()
-        self.prefs['debug'] = self.debug.get()
+        self.prefs[constants.pref_windowGeometry] = self.parent.geometry()
+        self.prefs[constants.pref_debug] = self.debug.get()
         self.bk.savePrefs(self.prefs)
         self.quitApp()
 
@@ -227,12 +227,12 @@ def main():
             return
     sim_bk = bk()
 
-    prefs['search_type'] = 'sup'
-    prefs['output_type'] = 'duokan'
-    prefs['windowGeometry'] = None
-    prefs['debug'] = False
-    prefs['add_notes_mark'] = True
-    prefs['mix_notes_class'] = 'jia-zhu'
+    prefs[constants.pref_search_type] = constants.search_type_sup
+    prefs[constants.pref_output_type] = constants.output_duokan
+    prefs[constants.pref_windowGeometry] = None
+    prefs[constants.pref_debug] = False
+    prefs[constants.pref_add_notes_mark] = True
+    prefs[constants.pref_mix_notes_class] = constants.default_mix_notes_class
 
     launch_tk_gui(sim_bk, prefs)
     return 0

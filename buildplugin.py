@@ -21,6 +21,7 @@ PLUGIN_FILES = [
     'plugin.py',
     'plugin.xml',
     'plugin.png',
+    'constants.py',
     'tkdialogs.py',
     'utilities.py',
     'images',
